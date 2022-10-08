@@ -90,7 +90,7 @@ yield_recommendation_model = pickle.load(
 
 # Loading Yield recommendation model
 
-cyield_recommendation_model_path = 'models/Yield2.pkl'
+cyield_recommendation_model_path = 'models/yil.pkl'
 cyield_recommendation_model = pickle.load(
     open(cyield_recommendation_model_path, 'rb'))
 
@@ -267,15 +267,15 @@ def cyield_prediction():
     if request.method == 'POST':
         
         Estimated = int(request.form['rainfall'])
-        Crop_Type = int(request.form['pest'])
-        Soil_Type= int(request.form['temp'])
-        Pesticide = int(request.form['area'])
-        Num_Doses= int(request.form['item'])
-        week =int(request.form['week'])
-        week_q=int(request.form['week2'])
-        season =int(request.form['sess'])
-        nine=int(request.form['ni'])
-        ten=int(request.form['te'])
+        Crop_Type = float(request.form['pest'])
+        Soil_Type= float(request.form['temp'])
+        Pesticide = float(request.form['area'])
+        Num_Doses= float(request.form['item'])
+        week =float(request.form['week'])
+        week_q=float(request.form['week2'])
+        season =float(request.form['sess'])
+        nine=float(request.form['ni'])
+        ten=float(request.form['te'])
         # if Crop_Type>1 or Soil_Type>1 or Pesticide>3 or season>3:
         #     return render_template('enter_prop.html', title=title)
 

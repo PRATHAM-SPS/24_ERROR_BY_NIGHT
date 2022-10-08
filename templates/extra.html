@@ -13,7 +13,7 @@
 <!--Form Section-->
 <br /><br />
 <h2 style="text-align: center; margin: 0px; color: black">
-  <b>Crop Quality</b>
+  <b>Yield Quality</b>
 </h2>
 <br />
 
@@ -29,9 +29,9 @@
 >
   <form method="POST" action="{{ url_for('cyield_prediction') }}">
     <div class="form-group">
-      <label for="rainfall" style="font-size: 17px"><b>Estimated_Insects_Count</b></label>
+      <label for="rainfall" style="font-size: 17px"><b>Statet</b></label>
       <input
-        type="number"
+        type="text"
         class="form-control"
         id="rainfall"
         name="rainfall"
@@ -42,7 +42,7 @@
     </div>
     <div class="form-group">
       <label for="pest" style="font-size: 17px"
-        ><b>Crop_Type</b></label
+        ><b>Nitrogen</b></label
       >
       <input
         type="number"
@@ -50,14 +50,14 @@
 
         id="pest"
         name="pest"
-        placeholder="for food crop insert 1 feed crop 0 "
+        placeholder="Enter the value "
         style="font-weight: bold"
         required
       />
     </div>
 
     <div class="form-group">
-      <label for="temp" style="font-size: 17px"><b>Soil_Type</b></label>
+      <label for="temp" style="font-size: 17px"><b>Nitogen in pounds</b></label>
       <input
         type="number"
         
@@ -70,19 +70,19 @@
       />
     </div>
     <div class="form-group">
-      <label for="area" style="font-size: 17px"><b>Pesticide_Category</b></label>
+      <label for="area" style="font-size: 17px"><b>Phosphorous</b></label>
       <input
         type="number"
         class="form-control"
         id="area"
         name="area"
-        placeholder=" bad quality 1 medium 2 good3 "
+        placeholder=" Enter the value "
         style="font-weight: bold"
         required
       />
     </div>
     <div class="form-group">
-      <label for="week" style="font-size: 17px"><b>Number_of_dose_per_week</b></label>
+      <label for="week" style="font-size: 17px"><b>Phosphorous in pound</b></label>
       <input
         type="number"
         
@@ -95,7 +95,7 @@
       />
     </div>
     <div class="form-group">
-      <label for="week2" style="font-size: 17px"><b>Pesticide used in weeks</b></label>
+      <label for="week2" style="font-size: 17px"><b>Potash</b></label>
       <input
         type="number"
         
@@ -108,7 +108,7 @@
       />
     </div>
     <div class="form-group">
-      <label for="week2" style="font-size: 17px"><b>Pesticide not used in weeks</b></label>
+      <label for="week2" style="font-size: 17px"><b>Potash in pound</b></label>
       <input
         type="number"
         
@@ -121,7 +121,7 @@
       />
     </div>
     <div class="form-group">
-      <label for="sess" style="font-size: 17px"><b>Season</b></label>
+      <label for="sess" style="font-size: 17px"><b>Area planted</b></label>
       <input
         type="number"
         
@@ -134,7 +134,7 @@
       />
     </div>
     <div class="form-group">
-      <label for="ni" style="font-size: 17px"><b>Season</b></label>
+      <label for="ni" style="font-size: 17px"><b>Harvested Area</b></label>
       <input
         type="number"
         
@@ -147,7 +147,7 @@
       />
     </div>
     <div class="form-group">
-      <label for="te" style="font-size: 17px"><b>Season</b></label>
+      <label for="te" style="font-size: 17px"><b>lint Yield</b></label>
       <input
         type="number"
         
