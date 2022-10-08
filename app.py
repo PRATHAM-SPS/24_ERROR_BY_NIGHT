@@ -80,7 +80,7 @@ crop_recommendation_model = pickle.load(
 
 # Loading Yield recommendation model
 
-yield_recommendation_model_path = 'models/yyields.pkl'
+yield_recommendation_model_path = 'models/cw.pkl'
 yield_recommendation_model = pickle.load(
     open(yield_recommendation_model_path, 'rb'))
 
@@ -139,7 +139,9 @@ def predict_image(img, model=disease_model):
 # ------------------------------------ FLASK APP -------------------------------------------------
 
 
+# app = Flask(__name__)
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 # render home page
 
@@ -216,13 +218,15 @@ def yield_prediction():
     title = 'Agrofy - Crop Recommendation'
 
     if request.method == 'POST':
-        A = 10
+        
         average_rain_fall_mm_per_year = int(request.form['rainfall'])
-        pesticides_tonnes = float(request.form['pest'])
-        avg_temp= float(request.form['temp'])
-        area = str(request.form['area'])
-        Item= str(request.form['item'])
-
+        pesticides_tonnes = int(request.form['pest'])
+        avg_temp= int(request.form['temp'])
+        area = int(request.form['area'])
+        Item= int(request.form['item'])
+        week =int(request.form['week'])
+        week_q=int(request.form['week2'])
+        season =int(request.form['sess'])
         # state = request.form.get("stt")
         #city = request.form.get("city")
         print(average_rain_fall_mm_per_year)
@@ -230,25 +234,28 @@ def yield_prediction():
         print(avg_temp)
         print(area)
         print(Item)
-    return render_template('try_again.html', title=title)
+        data = np.array([[ average_rain_fall_mm_per_year, pesticides_tonnes , avg_temp,  area ,  Item , week , week_q , season ]])
+        my_prediction = yield_recommendation_model.predict([[np.array(data['season'])]])
+       # my_prediction = yield_recommendation_model.predict(data)
+        return render_template('yield-result.html', unique=my_prediction, title=title)
 
 
        
 
-        # if  A > 0 :
-        #     # temperature, humidity = weather_fetch(city)
+        
+            # temperature, humidity = weather_fetch(city)
 
-        #     data = np.array([[ average_rain_fall_mm_per_year, pesticides_tonnes, avg_temp,  area ,  Item]])
-        #     gg = pd.get_dummies(data, columns=['area', "Item"],prefix = ['Country',"Item"]) 
-    
-        #     my_prediction = yield_recommendation_model.predict(gg)
-        #     inal_prediction = my_prediction[0]
+        data = np.array([[ average_rain_fall_mm_per_year, pesticides_tonnes , avg_temp,  area ,  Item , week , week_q , season ]])
+                # gg = pd.get_dummies(data, columns=['area', "Item"],prefix = ['Country',"Item"]) 
+        
+        my_prediction = yield_recommendation_model.predict(data)
+        inal_prediction = my_prediction[0]
 
-        #     return render_template('yield-result.html', unique=inal_prediction, title=title)
+        return render_template('yield-result.html', unique=inal_prediction, title=title)
 
-        # else:
+        
 
-        #     return render_template('try_again.html', title=title)
+           # return render_template('try_again.html', title=title)
 
 # render fertilizer recommendation result page
 
@@ -322,3 +329,12 @@ def disease_prediction():
 # ===============================================================================================
 if __name__ == '__main__':
     app.run(debug=False)
+    # No caching at all for API endpoints.
+@app.after_request
+def add_header(response):
+    # response.cache_control.no_store = True
+    if 'Cache-Control' not in response.headers:
+        response.headers['Cache-Control'] = 'no-store'
+    return response
+
+
