@@ -27,7 +27,7 @@
     padding: 10px 10px;
   "
 >
-  <form method="POST" action="{{ url_for('yield_prediction') }}">
+  <form method="POST" action="{{ url_for('cyield_prediction') }}">
     <div class="form-group">
       <label for="rainfall" style="font-size: 17px"><b>Estimated_Insects_Count</b></label>
       <input
@@ -128,6 +128,32 @@
         class="form-control"
         id="sess"
         name="sess"
+        placeholder="1 summer , 2 Rainy, 3 Winter"
+        style="font-weight: bold"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="ni" style="font-size: 17px"><b>Season</b></label>
+      <input
+        type="number"
+        
+        class="form-control"
+        id="ni"
+        name="ni"
+        placeholder="1 summer , 2 Rainy, 3 Winter"
+        style="font-weight: bold"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="te" style="font-size: 17px"><b>Season</b></label>
+      <input
+        type="number"
+        
+        class="form-control"
+        id="te"
+        name="te"
         placeholder="1 summer , 2 Rainy, 3 Winter"
         style="font-weight: bold"
         required
