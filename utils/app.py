@@ -10,7 +10,7 @@ import pandas as pd
 from utils.disease import disease_dic
 from utils.fertilizer import fertilizer_dic
 import requests
-import config 
+import config
 import pickle
 import io
 import torch
@@ -78,21 +78,11 @@ crop_recommendation_model = pickle.load(
 
 # =========================================================================================
 
-# Loading crop quality model
+# Loading Yield recommendation model
 
 yield_recommendation_model_path = 'models/cw.pkl'
 yield_recommendation_model = pickle.load(
     open(yield_recommendation_model_path, 'rb'))
-
-
-# =========================================================================================
-# =========================================================================================
-
-# Loading Yield recommendation model
-
-cyield_recommendation_model_path = 'models/Yield2.pkl'
-cyield_recommendation_model = pickle.load(
-    open(cyield_recommendation_model_path, 'rb'))
 
 
 # =========================================================================================
@@ -180,15 +170,10 @@ def fertilizer_recommendation():
 
 # render yield prediction input page
 
-@ app.route('/crop-quality')
+@ app.route('/yield-predict')
 def yield_predict():
     title = 'Agrofy - Crop Recommendation'
     return render_template('yield.html', title=title)
-
-@ app.route('/yield-predict')
-def crop_yield():
-    title = 'Agrofy - Crop Recommendation'
-    return render_template('extra.html', title=title)
 
 
 
@@ -220,80 +205,64 @@ def crop_prediction():
             my_prediction = crop_recommendation_model.predict(data)
             final_prediction = my_prediction[0]
 
-            return render_template('crop-result.html', prediction=final_prediction, title=title)
+            return render_template('crop-result.html', prediction=data, title=title)
 
         else:
 
             return render_template('try_again.html', title=title)
 
-# RENDER FOR crop quality
+# RENDER FOR YIELD
 
-@ app.route('/crop-quality', methods=['POST'])
+@ app.route('/yield-predict', methods=['POST'])
 def yield_prediction():
     title = 'Agrofy - Crop Recommendation'
 
     if request.method == 'POST':
         
-        Estimated = int(request.form['rainfall'])
-        Crop_Type = int(request.form['pest'])
-        Soil_Type= int(request.form['temp'])
-        Pesticide = int(request.form['area'])
-        Num_Doses= int(request.form['item'])
+        average_rain_fall_mm_per_year = int(request.form['rainfall'])
+        pesticides_tonnes = int(request.form['pest'])
+        avg_temp= int(request.form['temp'])
+        area = int(request.form['area'])
+        Item= int(request.form['item'])
         week =int(request.form['week'])
         week_q=int(request.form['week2'])
         season =int(request.form['sess'])
-        if Crop_Type>1 or Soil_Type>1 or Pesticide>3 or season>3:
-            return render_template('enter_prop.html', title=title)
-
-        data = np.array([[ Estimated, Crop_Type , Soil_Type,  Pesticide ,  Num_Doses , week , week_q , season ]])
+        # state = request.form.get("stt")
+        #city = request.form.get("city")
+        print(average_rain_fall_mm_per_year)
+        print(pesticides_tonnes )
+        print(avg_temp)
+        print(area)
+        print(Item)
+        data = np.array([[ average_rain_fall_mm_per_year, pesticides_tonnes , avg_temp,  area ,  Item , week , week_q , season ]])
+        #my_prediction = yield_recommendation_model.predict([[np.array(data['season'])]])
         my_prediction = yield_recommendation_model.predict(data)
-        test = my_prediction[0]
-        if test == 0 :
-            hey="Good"
-        elif test == 1:
-            hey="Bad"   
-        elif test ==2:
-            hey="very Bad"  
-      
-       
+        if my_prediction == 1:
+            hey="hahaa"
+        else:
+            hey="huuuuuuuuu"
+
         return render_template('yield-result.html', unique=hey, title=title)
 
-        #crop yield
-####################################################################################
-@ app.route('/crop-yield', methods=['POST'])
-def cyield_prediction():
-    title = 'Agrofy - Crop Yield'
 
-    if request.method == 'POST':
-        
-        Estimated = int(request.form['rainfall'])
-        Crop_Type = int(request.form['pest'])
-        Soil_Type= int(request.form['temp'])
-        Pesticide = int(request.form['area'])
-        Num_Doses= int(request.form['item'])
-        week =int(request.form['week'])
-        week_q=int(request.form['week2'])
-        season =int(request.form['sess'])
-        nine=int(request.form['ni'])
-        ten=int(request.form['te'])
-        # if Crop_Type>1 or Soil_Type>1 or Pesticide>3 or season>3:
-        #     return render_template('enter_prop.html', title=title)
-
-        data = np.array([[ Estimated, Crop_Type , Soil_Type,  Pesticide ,  Num_Doses , week , week_q , season ,nine ,ten]])
-        my_prediction = cyield_recommendation_model.predict(data)
-        test = my_prediction[0]
-        # if test == 0 :
-        #     hey="Good"
-        # elif test == 1:
-        #     hey="Bad"   
-        # elif test ==2:
-        #     hey="very Bad"  
-      
        
-        return render_template('yield-result.html', unique=test, title=title)
 
-####################################################################################
+        
+        #     # temperature, humidity = weather_fetch(city)
 
+        # data = np.array([[ average_rain_fall_mm_per_year, pesticides_tonnes , avg_temp,  area ,  Item , week , week_q , season ]])
+        #         # gg = pd.get_dummies(data, columns=['area', "Item"],prefix = ['Country',"Item"]) 
+        
+        # my_prediction = yield_recommendation_model.predict(data)
+        # inal_prediction = my_prediction[0]
+
+        # return render_template('yield-result.html', unique=inal_prediction, title=title)
+
+        
+
+           # return render_template('try_again.html', title=title)
+
+# render fertilizer recommendation result page
 
 
 @ app.route('/fertilizer-predict', methods=['POST'])
